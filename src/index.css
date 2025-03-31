@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 211 100% 50%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -96,6 +90,35 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-app-bg text-foreground;
   }
+}
+
+.option-button {
+  @apply flex items-center gap-3 w-full p-3 rounded-xl border border-gray-200 bg-white hover:bg-app-light-blue transition-colors;
+}
+
+.option-button.selected {
+  @apply bg-app-light-blue border-app-blue;
+}
+
+.continue-button {
+  @apply w-full bg-app-blue text-white py-4 rounded-xl font-medium hover:bg-blue-600 transition-colors;
+}
+
+.progress-bar {
+  @apply h-2 bg-app-blue rounded-full;
+}
+
+.sidebar-item {
+  @apply flex items-center gap-2 py-3 px-4 border-b border-gray-200;
+}
+
+.sidebar-item.active {
+  @apply bg-white relative;
+}
+
+.sidebar-item.active::after {
+  content: '';
+  @apply absolute right-0 top-0 h-full w-1 bg-app-blue;
 }
