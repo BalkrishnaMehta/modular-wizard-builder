@@ -36,7 +36,6 @@ const repairMethods: { value: RepairMethod; icon: string }[] = [
 
 const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepFormProps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const step = steps[currentStep];
 
@@ -46,10 +45,6 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
     }
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
   const renderStepContent = (step: FormStep, formikProps: any) => {
     const { values, setFieldValue, handleSubmit } = formikProps;
 
@@ -57,24 +52,34 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
       case 'garment':
         return (
           <div className="flex flex-col gap-4 mt-4">
-            {garmentOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                className={`option-button ${values.garment === option.value ? 'selected' : ''}`}
-                onClick={() => {
-                  setFieldValue('garment', option.value);
-                }}
-              >
-                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <span className="text-xl">{option.icon}</span>
-                </div>
-                <span>{option.value}</span>
-              </button>
-            ))}
+            <div className="grid grid-cols-1 gap-3">
+              {garmentOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`flex items-center p-3 rounded-lg ${
+                    values.garment === option.value 
+                      ? 'bg-blue-100 border-2 border-blue-500' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                  onClick={() => {
+                    setFieldValue('garment', option.value);
+                  }}
+                >
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-gray-300">
+                    <span className="text-xl">{option.icon}</span>
+                  </div>
+                  <span className="ml-3 font-medium">{option.value}</span>
+                </button>
+              ))}
+            </div>
             
             {values.garment && (
-              <button type="button" onClick={handleNextStep} className="continue-button mt-4">
+              <button 
+                type="button" 
+                onClick={handleNextStep} 
+                className="mt-6 w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+              >
                 Fortsett
               </button>
             )}
@@ -84,24 +89,34 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
       case 'repairMethod':
         return (
           <div className="flex flex-col gap-4 mt-4">
-            {repairMethods.map((method) => (
-              <button
-                key={method.value}
-                type="button"
-                className={`option-button ${values.repairMethod === method.value ? 'selected' : ''}`}
-                onClick={() => {
-                  setFieldValue('repairMethod', method.value);
-                }}
-              >
-                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <span className="text-xl">{method.icon}</span>
-                </div>
-                <span>{method.value}</span>
-              </button>
-            ))}
+            <div className="grid grid-cols-1 gap-3">
+              {repairMethods.map((method) => (
+                <button
+                  key={method.value}
+                  type="button"
+                  className={`flex items-center p-3 rounded-lg ${
+                    values.repairMethod === method.value 
+                      ? 'bg-blue-100 border-2 border-blue-500' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                  onClick={() => {
+                    setFieldValue('repairMethod', method.value);
+                  }}
+                >
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-gray-300">
+                    <span className="text-xl">{method.icon}</span>
+                  </div>
+                  <span className="ml-3 font-medium">{method.value}</span>
+                </button>
+              ))}
+            </div>
             
             {values.repairMethod && (
-              <button type="button" onClick={handleNextStep} className="continue-button mt-4">
+              <button 
+                type="button" 
+                onClick={handleNextStep} 
+                className="mt-6 w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+              >
                 Fortsett
               </button>
             )}
@@ -122,14 +137,17 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
             <div>
               <p className="mb-2">Her kan du skrive mer om skaden og sin plassering.</p>
               <textarea
-                className="w-full h-40 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-app-blue"
+                className="w-full h-40 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="For eksempel: et hull på høyre kne fra da jeg falt, ganske bredt."
                 value={values.description || ''}
                 onChange={(e) => setFieldValue('description', e.target.value)}
               />
             </div>
             
-            <button type="submit" className="continue-button">
+            <button 
+              type="submit" 
+              className="w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+            >
               Fortsett
             </button>
           </div>
@@ -141,51 +159,45 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       <Header 
         showBackButton={true}
         title={initialValues.service}
         onBack={onBack}
       />
       
-      <ProgressBar currentStep={currentStep + 1} totalSteps={steps.length} />
+      <div className="border-t border-gray-200">
+        <ProgressBar currentStep={currentStep + 1} totalSteps={steps.length} />
+      </div>
 
-      <div className="flex flex-1">
-        {/* Sidebar */}
-        <AnimatePresence>
-          {sidebarOpen && (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 280, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-100 border-r border-gray-200 overflow-hidden"
+      <div className="flex min-h-[600px]">
+        {/* Sidebar with steps */}
+        <div className="w-64 border-r border-gray-200 p-2 bg-gray-50">
+          {steps.map((step, index) => (
+            <div
+              key={step.id}
+              className={`flex items-center py-3 px-4 rounded-lg mb-2 ${
+                index === currentStep 
+                  ? 'bg-white font-medium text-blue-600 shadow-sm' 
+                  : 'text-gray-600'
+              }`}
             >
-              <div className="py-2">
-                {steps.map((step, index) => (
-                  <div
-                    key={step.id}
-                    className={`sidebar-item ${index === currentStep ? 'active' : ''}`}
-                  >
-                    <span>{step.title}</span>
-                    {index === currentStep && (
-                      <ChevronRight size={18} className="ml-auto text-app-blue" />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Toggle sidebar button */}
-        <motion.button
-          className="absolute top-[90px] left-2 z-10 p-2 bg-white rounded-full shadow-md"
-          onClick={toggleSidebar}
-          animate={{ rotate: sidebarOpen ? 180 : 0 }}
-        >
-          <ChevronRight size={20} className={sidebarOpen ? "rotate-180" : ""} />
-        </motion.button>
+              {index < currentStep ? (
+                <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white mr-2">
+                  ✓
+                </div>
+              ) : (
+                <div className={`w-6 h-6 rounded-full ${
+                  index === currentStep ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                } flex items-center justify-center mr-2`}>
+                  {index + 1}
+                </div>
+              )}
+              <span>{step.title}</span>
+              {index === currentStep && <ChevronRight size={16} className="ml-auto text-blue-500" />}
+            </div>
+          ))}
+        </div>
 
         {/* Main content */}
         <div className="flex-1 p-6">
@@ -202,7 +214,6 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="max-w-xl mx-auto"
                   >
                     <div className="mb-8">
                       <h1 className="text-2xl font-bold mb-2">{step.title}</h1>

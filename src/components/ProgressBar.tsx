@@ -12,7 +12,7 @@ const ProgressBar = ({ currentStep, totalSteps }: ProgressBarProps) => {
   return (
     <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
       <div
-        className="progress-bar"
+        className="h-full bg-blue-500"
         style={{ width: `${progress}%` }}
       />
     </div>

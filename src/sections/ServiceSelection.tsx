@@ -6,14 +6,13 @@ import { ServiceType } from '@/types';
 
 type ServiceSelectionProps = {
   onServiceSelect: (service: ServiceType) => void;
-  onClose: () => void;
 };
 
-const ServiceSelection = ({ onServiceSelect, onClose }: ServiceSelectionProps) => {
+const ServiceSelection = ({ onServiceSelect }: ServiceSelectionProps) => {
   return (
-    <div className="min-h-screen flex flex-col bg-white rounded-2xl overflow-hidden shadow-xl">
-      <Header onClose={onClose} />
-      <div className="flex-1 flex flex-col justify-center p-6">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-xl">
+      <Header />
+      <div className="p-6">
         <ServiceSelectionForm onSubmit={onServiceSelect} />
       </div>
     </div>
