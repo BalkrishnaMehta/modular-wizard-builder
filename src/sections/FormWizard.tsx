@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import MultiStepForm from '@/forms/MultiStepForm';
 import { FormValues, repairSteps, tailoringSteps } from '@/types';
+import { Toggle } from '@/components/ui/toggle';
+import { PanelLeft, PanelRightClose } from 'lucide-react';
 
 type FormWizardProps = {
   initialValues: FormValues;
@@ -12,6 +14,11 @@ type FormWizardProps = {
 
 const FormWizard = ({ initialValues, onBack, onSubmit }: FormWizardProps) => {
   const steps = initialValues.service === 'Reparasjon' ? repairSteps : tailoringSteps;
+  const [showSidebar, setShowSidebar] = useState(true);
+
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
 
   return (
     <motion.div
@@ -25,6 +32,8 @@ const FormWizard = ({ initialValues, onBack, onSubmit }: FormWizardProps) => {
         steps={steps}
         onBack={onBack}
         onSubmit={onSubmit}
+        showSidebar={showSidebar}
+        toggleSidebar={toggleSidebar}
       />
     </motion.div>
   );

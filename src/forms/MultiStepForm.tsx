@@ -5,13 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/Header';
 import ProgressBar from '@/components/ProgressBar';
 import { FormStep, FormValues, GarmentType, RepairMethod } from '@/types';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, PanelLeft, PanelRightClose } from 'lucide-react';
+import { Toggle } from '@/components/ui/toggle';
 
 type MultiStepFormProps = {
   initialValues: FormValues;
   steps: FormStep[];
   onBack: () => void;
   onSubmit: (values: FormValues) => void;
+  showSidebar?: boolean;
+  toggleSidebar?: () => void;
 };
 
 const garmentOptions: { value: GarmentType; icon: string }[] = [
@@ -34,7 +37,14 @@ const repairMethods: { value: RepairMethod; icon: string }[] = [
   { value: 'Fest på beltehemper', icon: '🔄' },
 ];
 
-const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepFormProps) => {
+const MultiStepForm = ({ 
+  initialValues, 
+  steps, 
+  onBack, 
+  onSubmit,
+  showSidebar = true,
+  toggleSidebar
+}: MultiStepFormProps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const step = steps[currentStep];
@@ -164,7 +174,15 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
         showBackButton={true}
         title={initialValues.service}
         onBack={onBack}
-      />
+      >
+        <Toggle 
+          onClick={toggleSidebar} 
+          className="ml-auto mr-2"
+          aria-label="Toggle sidebar"
+        >
+          {showSidebar ? <PanelRightClose size={18} /> : <PanelLeft size={18} />}
+        </Toggle>
+      </Header>
       
       <div className="border-t border-gray-200">
         <ProgressBar currentStep={currentStep + 1} totalSteps={steps.length} />
@@ -172,32 +190,34 @@ const MultiStepForm = ({ initialValues, steps, onBack, onSubmit }: MultiStepForm
 
       <div className="flex min-h-[600px]">
         {/* Sidebar with steps */}
-        <div className="w-64 border-r border-gray-200 p-2 bg-gray-50">
-          {steps.map((step, index) => (
-            <div
-              key={step.id}
-              className={`flex items-center py-3 px-4 rounded-lg mb-2 ${
-                index === currentStep 
-                  ? 'bg-white font-medium text-blue-600 shadow-sm' 
-                  : 'text-gray-600'
-              }`}
-            >
-              {index < currentStep ? (
-                <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white mr-2">
-                  ✓
-                </div>
-              ) : (
-                <div className={`w-6 h-6 rounded-full ${
-                  index === currentStep ? 'bg-blue-500 text-white' : 'bg-gray-300'
-                } flex items-center justify-center mr-2`}>
-                  {index + 1}
-                </div>
-              )}
-              <span>{step.title}</span>
-              {index === currentStep && <ChevronRight size={16} className="ml-auto text-blue-500" />}
-            </div>
-          ))}
-        </div>
+        {showSidebar && (
+          <div className="w-64 border-r border-gray-200 p-2 bg-gray-50">
+            {steps.map((step, index) => (
+              <div
+                key={step.id}
+                className={`flex items-center py-3 px-4 rounded-lg mb-2 ${
+                  index === currentStep 
+                    ? 'bg-white font-medium text-blue-600 shadow-sm' 
+                    : 'text-gray-600'
+                }`}
+              >
+                {index < currentStep ? (
+                  <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white mr-2">
+                    ✓
+                  </div>
+                ) : (
+                  <div className={`w-6 h-6 rounded-full ${
+                    index === currentStep ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                  } flex items-center justify-center mr-2`}>
+                    {index + 1}
+                  </div>
+                )}
+                <span>{step.title}</span>
+                {index === currentStep && <ChevronRight size={16} className="ml-auto text-blue-500" />}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Main content */}
         <div className="flex-1 p-6">

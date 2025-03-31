@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Logo from './Logo';
 import { ArrowLeft, X, HelpCircle, User, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -9,9 +9,10 @@ type HeaderProps = {
   title?: string;
   onBack?: () => void;
   onClose?: () => void;
+  children?: ReactNode;
 };
 
-const Header = ({ showBackButton = false, title, onBack, onClose }: HeaderProps) => {
+const Header = ({ showBackButton = false, title, onBack, onClose, children }: HeaderProps) => {
   return (
     <motion.header 
       className="flex items-center justify-between p-4 bg-white border-b border-gray-200"
@@ -37,6 +38,7 @@ const Header = ({ showBackButton = false, title, onBack, onClose }: HeaderProps)
         )}
       </div>
       <div className="flex items-center gap-4">
+        {children}
         <button className="p-1">
           <HelpCircle size={24} />
         </button>
