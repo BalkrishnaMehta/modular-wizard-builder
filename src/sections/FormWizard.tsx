@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import MultiStepForm from '@/forms/MultiStepForm';
 import { FormValues, repairSteps, tailoringSteps } from '@/types';
-import { Toggle } from '@/components/ui/toggle';
-import { PanelLeft, PanelRightClose } from 'lucide-react';
 
 type FormWizardProps = {
   initialValues: FormValues;
@@ -22,19 +20,21 @@ const FormWizard = ({ initialValues, onBack, onSubmit }: FormWizardProps) => {
 
   return (
     <motion.div
-      className="min-h-screen flex flex-col bg-white rounded-2xl overflow-hidden shadow-xl"
+      className="flex items-center justify-center min-h-screen bg-blue-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <MultiStepForm
-        initialValues={initialValues}
-        steps={steps}
-        onBack={onBack}
-        onSubmit={onSubmit}
-        showSidebar={showSidebar}
-        toggleSidebar={toggleSidebar}
-      />
+      <div className="w-full max-w-3xl bg-white rounded-2xl overflow-hidden shadow-xl">
+        <MultiStepForm
+          initialValues={initialValues}
+          steps={steps}
+          onBack={onBack}
+          onSubmit={onSubmit}
+          showSidebar={showSidebar}
+          toggleSidebar={toggleSidebar}
+        />
+      </div>
     </motion.div>
   );
 };

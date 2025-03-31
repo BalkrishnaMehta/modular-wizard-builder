@@ -1,18 +1,29 @@
 
 import React, { ReactNode } from 'react';
 import Logo from './Logo';
-import { ArrowLeft, X, HelpCircle, User, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, X, HelpCircle, User, ShoppingCart, PanelLeft, PanelRightClose } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Toggle } from './ui/toggle';
 
 type HeaderProps = {
   showBackButton?: boolean;
   title?: string;
   onBack?: () => void;
   onClose?: () => void;
+  showSidebar?: boolean;
+  toggleSidebar?: () => void;
   children?: ReactNode;
 };
 
-const Header = ({ showBackButton = false, title, onBack, onClose, children }: HeaderProps) => {
+const Header = ({ 
+  showBackButton = false, 
+  title, 
+  onBack, 
+  onClose, 
+  showSidebar,
+  toggleSidebar,
+  children 
+}: HeaderProps) => {
   return (
     <motion.header 
       className="flex items-center justify-between p-4 bg-white border-b border-gray-200"
@@ -38,6 +49,15 @@ const Header = ({ showBackButton = false, title, onBack, onClose, children }: He
         )}
       </div>
       <div className="flex items-center gap-4">
+        {toggleSidebar && (
+          <Toggle 
+            onClick={toggleSidebar} 
+            className="p-1"
+            aria-label="Toggle sidebar"
+          >
+            {showSidebar ? <PanelRightClose size={20} /> : <PanelLeft size={20} />}
+          </Toggle>
+        )}
         {children}
         <button className="p-1">
           <HelpCircle size={24} />

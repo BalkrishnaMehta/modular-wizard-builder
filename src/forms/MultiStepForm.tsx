@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/Header';
 import ProgressBar from '@/components/ProgressBar';
 import { FormStep, FormValues, GarmentType, RepairMethod } from '@/types';
-import { ChevronRight, PanelLeft, PanelRightClose } from 'lucide-react';
-import { Toggle } from '@/components/ui/toggle';
+import { ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 type MultiStepFormProps = {
   initialValues: FormValues;
@@ -62,7 +62,7 @@ const MultiStepForm = ({
       case 'garment':
         return (
           <div className="flex flex-col gap-4 mt-4">
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
               {garmentOptions.map((option) => (
                 <button
                   key={option.value}
@@ -85,13 +85,15 @@ const MultiStepForm = ({
             </div>
             
             {values.garment && (
-              <button 
-                type="button" 
-                onClick={handleNextStep} 
-                className="mt-6 w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
-              >
-                Fortsett
-              </button>
+              <div className="mt-6 max-w-md mx-auto">
+                <Button 
+                  type="button" 
+                  onClick={handleNextStep} 
+                  className="w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Fortsett
+                </Button>
+              </div>
             )}
           </div>
         );
@@ -99,7 +101,7 @@ const MultiStepForm = ({
       case 'repairMethod':
         return (
           <div className="flex flex-col gap-4 mt-4">
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
               {repairMethods.map((method) => (
                 <button
                   key={method.value}
@@ -122,17 +124,19 @@ const MultiStepForm = ({
             </div>
             
             {values.repairMethod && (
-              <button 
-                type="button" 
-                onClick={handleNextStep} 
-                className="mt-6 w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
-              >
-                Fortsett
-              </button>
+              <div className="mt-6 max-w-md mx-auto">
+                <Button 
+                  type="button" 
+                  onClick={handleNextStep} 
+                  className="w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Fortsett
+                </Button>
+              </div>
             )}
 
             {values.repairMethod === 'Bytte glidelås' && (
-              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg max-w-md mx-auto">
                 <p className="text-sm text-gray-700">
                   <strong>Er glidelåsen din gåen?</strong> Vi fjerner den gamle, velger en ny og syr den på plass.
                 </p>
@@ -143,7 +147,7 @@ const MultiStepForm = ({
         
       case 'description':
         return (
-          <div className="flex flex-col gap-6 mt-4">
+          <div className="flex flex-col gap-6 mt-4 max-w-md mx-auto">
             <div>
               <p className="mb-2">Her kan du skrive mer om skaden og sin plassering.</p>
               <textarea
@@ -154,12 +158,12 @@ const MultiStepForm = ({
               />
             </div>
             
-            <button 
+            <Button 
               type="submit" 
               className="w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
             >
               Fortsett
-            </button>
+            </Button>
           </div>
         );
         
@@ -174,15 +178,9 @@ const MultiStepForm = ({
         showBackButton={true}
         title={initialValues.service}
         onBack={onBack}
-      >
-        <Toggle 
-          onClick={toggleSidebar} 
-          className="ml-auto mr-2"
-          aria-label="Toggle sidebar"
-        >
-          {showSidebar ? <PanelRightClose size={18} /> : <PanelLeft size={18} />}
-        </Toggle>
-      </Header>
+        showSidebar={showSidebar}
+        toggleSidebar={toggleSidebar}
+      />
       
       <div className="border-t border-gray-200">
         <ProgressBar currentStep={currentStep + 1} totalSteps={steps.length} />
@@ -220,7 +218,7 @@ const MultiStepForm = ({
         )}
 
         {/* Main content */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 overflow-y-auto">
           <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}
@@ -235,7 +233,7 @@ const MultiStepForm = ({
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <div className="mb-8">
+                    <div className="mb-8 max-w-md mx-auto">
                       <h1 className="text-2xl font-bold mb-2">{step.title}</h1>
                       <p className="text-gray-600">{step.description}</p>
                     </div>
